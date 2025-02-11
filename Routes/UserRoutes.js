@@ -1,13 +1,13 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config(); // Load .env file
 import sendResponse from "../Helpers/SendResponse.js";
 import ClientModel from "../Models/Users.js";
 import bcrypt from "bcrypt";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
+import verifyToken from "../Middleware/token.js";
+import dotenv from "dotenv";
+dotenv.config(); // Load .env file
 
-// dotenv.config(); // Load .env file
 const userRouter = express.Router();
 
 // for sign up
@@ -69,5 +69,34 @@ userRouter.post('/login', async (req, res) => {
 
   return sendResponse(res, 200, { user, token }, false, "User Login Successfully");
 });
+
+// Route to get current user
+userRouter.get("/currentUser", verifyToken, async (req, res) => {
+  try {
+    const currentUser = await ClientModel.findById(req.user.id).select("-password -address");
+    console.log("Current User from DB:", currentUser);
+    sendResponse(res, 200, currentUser, false, "Fetched Data Successfully");
+  } catch (error) {
+    sendResponse(res, 500, null, true, "xxxxxxxxxxxxxx");
+  }
+});
+
+
+userRouter.get("/allUsers", async (req, res) => {
+  try {
+    const allUsers = await ClientModel.find().select("-password -address");
+    
+    if (allUsers.length === 0) {
+      return sendResponse(res, 404, null, true, "No users found.");
+    }
+
+    console.log("All Users from DB:", allUsers);
+    sendResponse(res, 200, allUsers, false, "Fetched Data Successfully");
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    sendResponse(res, 500, null, true, "Internal Server Error");
+  }
+});
+
   
 export default userRouter
