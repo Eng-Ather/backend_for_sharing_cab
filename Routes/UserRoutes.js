@@ -20,6 +20,10 @@ const registerSchema = Joi.object({
   profileImage: Joi.string().min(10).max(50).required(),
 });
 
+const loginSchema = Joi.object({})
+
+
+
 userRouter.post("/signup", async (req, res) => {
   const { error, value } = registerSchema.validate(req.body);
   if (error) return sendResponse(res, 400, null, true, error.message);
@@ -32,6 +36,8 @@ userRouter.post("/signup", async (req, res) => {
   sendResponse(res, 201, newUser, false, "User Registered Successfully");
 });
 
-userRouter.post("/login", async (req, res) => {});
+userRouter.post("/login", async (req, res) => {
+    const {error, value } = loginSchema.validate(req.body)
+});
 
 export default userRouter;
