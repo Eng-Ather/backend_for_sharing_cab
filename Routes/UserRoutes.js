@@ -1,12 +1,27 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config(); // Load .env file
+import sendResponse from "../Helpers/SendResponse.js";
+import ClientModel from "../Models/Users.js";
+import bcrypt from "bcrypt";
+import Joi from "joi";
+dotenv.config(); // Load .env file
 const userRouter = express.Router();
 
+const registerSchema = Joi.object({
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net"] },
+  }),
+  password: Joi.string().min(8).required(),
+  name: Joi.string().min(3).max(30).required(),
+  gender: Joi.string().min(3).max(30).required(),
+  phoneNumber: Joi.number(),
+  address: Joi.string().min(10).max(50).required(),
+  profileImage: Joi.string().min(10).max(50).required(),
+});
 
 const loginSchema = Joi.object({})
-
-
 
 userRouter.post("/signup", async (req, res) => {
   const { error, value } = registerSchema.validate(req.body);
@@ -19,11 +34,6 @@ userRouter.post("/signup", async (req, res) => {
   newUser = await newUser.save();
   sendResponse(res, 201, newUser, false, "User Registered Successfully");
 });
-
-userRouter.post("/login", async (req, res) => {
-    const {error, value } = loginSchema.validate(req.body)
-});
-
 
 
 userRouter.post('/login', async (req, res)=>{
