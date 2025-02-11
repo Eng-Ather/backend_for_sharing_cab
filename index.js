@@ -19,10 +19,9 @@ mongoose.connection.on("open", () => {
 });
 
 
-
 // main page message
 app.get("/", (req, res) => {
-    res.send("Welcom TO 3ACE TECHNOLOGIES");
+    res.send("Welcom TO SHARING CAB");
 });
 
 app.use(cors()); // Enable CORS for all routes
