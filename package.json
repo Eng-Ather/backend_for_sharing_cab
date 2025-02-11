@@ -1,0 +1,21 @@
+{
+  "name": "sharing-cab",
+  "version": "1.0.0",
+  "description": "Sharing Cab is a ride-sharing app built with React Native (frontend) and Node.js + Express.js (backend). It offers seamless cab booking, real-time ride updates, secure authentication, and an efficient trip management system—making travel more convenient and affordable.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.0",
+    "nodemon": "^3.1.9"
+  }
+}
